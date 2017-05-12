@@ -26,6 +26,10 @@
         <p>This is text that was rendered by our Marionette app. probando desde df</p>
     </script>
 
+    <script type="text/template" id="different-static-template">
+        <p>Text from a different template...</p>
+    </script>
+
     <script src="./assets/js/vendor/jquery.js"></script>
     <script src="./assets/js/vendor/json2.js"></script>
     <script src="./assets/js/vendor/underscore.js"></script>
@@ -33,6 +37,12 @@
     <script src="./assets/js/vendor/backbone.marionette.js"></script>
 
     <script type="text/javascript">
+        function sleep(time) {
+            return new Promise((resolve) = > setTimeout(resolve, time)
+        )
+            ;
+        }
+
         var ContactManager = new Marionette.Application();
 
 //        ContactManager.on("initialize:after",function () {
@@ -44,7 +54,16 @@
 
         ContactManager.on("start", function(){
             var staticView = new ContactManager.StaticView();
+
             ContactManager.regions.main.show(staticView);
+
+            var staticView = new ContactManager.StaticView({
+                template: "#different-static-template"
+            });
+            sleep(3000).then(function () {
+//                alert("hola");
+                ContactManager.regions.main.show(staticView);
+            });
         });
 
         ContactManager.on("before:start", function(){
